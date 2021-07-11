@@ -775,7 +775,7 @@ class Graphviz(Handler):
 
     def image(self):
         '{im_prg} {im_opt} -T{im_fmt} <fname>.{im_prg} <fname>.{im_fmt}'
-        args = self.im_opt + ['-T%s' % self.im_fmt, self.inpfile, 
+        args = self.im_opt + ['-T%s' % self.im_fmt, self.inpfile,
                 '-o', self.outfile]
 
         if self.cmd(self.im_prg, *args):
@@ -1054,6 +1054,20 @@ class SheBang(Handler):
         os.chmod(self.inpfile, stat.S_IEXEC | os.stat(self.inpfile).st_mode)
         args = self.im_opt + [self.outfile]
         if self.cmd(self.inpfile, *args):
+            return self.result()
+
+class Svgbob(Handler):
+    '''
+    cargo install svgbob
+    https://github.com/ivanceras/svgbob
+    '''
+    cmdmap = {'svgbob': 'svgbob'}
+    im_fmt = 'svg'
+
+    def image(self):
+        'svgbob <fname>.bob -o <fname>.svg {im_opt}'
+        args = [self.inpfile, '-o', self.outfile] + self.im_opt
+        if self.cmd(self.im_prg, *args):
             return self.result()
 
 # use sys.modules[__name__].__doc__ instead of __doc__ directly
